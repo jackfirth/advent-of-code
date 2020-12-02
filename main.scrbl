@@ -1,4 +1,4 @@
 #lang scribble/manual
 
-@title{Racket Package Template}
-@defmodule[racket-package-template]
+@title{Advent of Code}
+@defmodule[advent-of-code]
