@@ -9,7 +9,8 @@
               "advent-of-code")))
 
 (define deps
-  (list "rebellion"
+  (list "fancy-app"
+        "rebellion"
         "base"))
 
 (define build-deps
