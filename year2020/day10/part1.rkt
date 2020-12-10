@@ -44,7 +44,9 @@
              (taking-while (<= _ (+ latest-joltage 3)))
              #:into into-list))
 
-(define/guard (build-joltage-chain [chain-so-far empty-list] [latest-joltage 0] [remaining-adaptors input-numbers])
+(define/guard (build-joltage-chain [chain-so-far empty-list]
+                                   [latest-joltage 0]
+                                   [remaining-adaptors input-numbers])
   (guard (empty-list? remaining-adaptors) then (list-reverse chain-so-far))
   (define choices (possible-joltages latest-joltage remaining-adaptors))
   (for/or ([choice (in-list choices)])
