@@ -51,12 +51,6 @@
 
 (define occupation-grid (grid-set #:width width #:height height))
 
-(define (sees-adjacent? space occupation-grid #:row-delta dr #:column-delta dc)
-  (define/guard (loop [row (+ (grid-space-row space) dr)]
-                      [column (+ (grid-space-column space) dc)])
-    (guard (< 0 row width) else #false)
-    (guard (< 0 column
-
 (define (space-neighbors space occupation-grid)
   (define row (grid-space-row space))
   (define column (grid-space-column space))
