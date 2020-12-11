@@ -6,6 +6,7 @@
 
 (provide
  (contract-out
+  #:unprotected-submodule no-contracts
   [grid-space? predicate/c]
   [grid-space (-> #:row natural? #:column natural? grid-space?)]
   [grid-space-row (-> grid-space? natural?)]

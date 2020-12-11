@@ -9,6 +9,7 @@
 
 (provide
  (contract-out
+  #:unprotected-submodule no-contracts
   [grid-dimension/c flat-contract?]
   [grid-set? predicate/c]
   [grid-set (-> #:width grid-dimension/c #:height grid-dimension/c grid-space? ... grid-set?)]
@@ -39,7 +40,7 @@
    (-> unused-grid-set-builder/c grid-set-sequence/c unused-grid-set-builder/c)]
   [build-grid-set (-> unused-grid-set-builder/c grid-set?)]))
 
-(require advent-of-code/private/grid-space
+(require (submod advent-of-code/private/grid-space no-contracts)
          fancy-app
          racket/contract/combinator
          racket/math
