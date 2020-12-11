@@ -51,19 +51,41 @@
 
 (define occupation-grid (grid-set #:width width #:height height))
 
-(define (sees-adjacent? space occupation-grid #:row-delta dr #:column-delta dc)
+
+
+(define (first-visible-seat space #:row-delta dr #:column-delta dc)
   (define/guard (loop [row (+ (grid-space-row space) dr)]
                       [column (+ (grid-space-column space) dc)])
-    (guard (< 0 row width) else #false)
-    (guard (< 0 column
+    (guard (<= 0 row (sub1 height)) else #false)
+    (guard (<= 0 column (sub1 width)) else #false)
+    (guard (grid-set-contains? seat-grid #:row row #:column column) then
+      (grid-space #:row row #:column column))
+    (loop (+ row dr) (+ column dc)))
+  (loop))
+
+(define dr-list (list 0 -1 -1 -1 0 1 1 1))
+(define dc-list (list 1 1 0 -1 -1 -1 0 1))
+
+(define first-visible-seat-table
+  (for/hash ([dr (in-list dr-list)]
+             [dc (in-list dc-list)]
+             #:when #true
+             [seat (in-grid-set seat-grid)]
+             #:when #true
+             [first-visible (in-value (first-visible-seat seat #:row-delta dr #:column-delta dc))]
+             #:when first-visible)
+    (values (list dr dc seat) first-visible)))
 
 (define (space-neighbors space occupation-grid)
   (define row (grid-space-row space))
   (define column (grid-space-column space))
-  (for*/sum ([r (in-range (max 0 (sub1 row)) (min height (+ row 2)))]
-             [c (in-range (max 0 (sub1 column)) (min width (+ column 2)))]
-             #:unless (and (equal? r row) (equal? c column))
-             #:when (grid-set-contains? occupation-grid #:row r #:column c))
+  (for/sum ([dr (in-list dr-list)]
+            [dc (in-list dc-list)]
+            #:when (hash-has-key? first-visible-seat-table (list dr dc space))
+            #:when
+            (grid-set-contains-space?
+             occupation-grid
+             (hash-ref first-visible-seat-table (list dr dc space))))
     1))
 
 (define/guard (loop [occupation-grid occupation-grid] [generation 0])
@@ -73,7 +95,7 @@
                 #:result (values (build-grid-set builder) any-seats-became-empty?))
                ([space (in-grid-set occupation-grid)])
       (define num-occupied-neighbor-seats (space-neighbors space occupation-grid))
-      (if (>= num-occupied-neighbor-seats 4)
+      (if (>= num-occupied-neighbor-seats 5)
           (values builder #true)
           (values (grid-set-builder-add-space builder space) any-seats-became-empty?))))
   (define-values (new-arrivals-grid any-seats-became-full?)
