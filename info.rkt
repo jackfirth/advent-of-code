@@ -9,7 +9,8 @@
               "advent-of-code")))
 
 (define deps
-  (list "fancy-app"
+  (list "math-lib"
+        "fancy-app"
         "rebellion"
         "base"))
 
