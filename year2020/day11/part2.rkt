@@ -121,6 +121,7 @@
   (guard any-changes? then (loop new-occupation-grid (add1 generation)))
   new-occupation-grid)
 
-(define stable-occupation-grid (loop))
+(module+ main
+  (define stable-occupation-grid (loop))
 
-(grid-set-size stable-occupation-grid)
+  (grid-set-size stable-occupation-grid))
