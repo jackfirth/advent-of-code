@@ -3,6 +3,7 @@
 (require racket/contract/base)
 
 (provide
+ guard-match
  regexp-define
  (contract-out
   [string->char (-> string? char?)]))
